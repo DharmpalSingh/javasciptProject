@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./css/landing.css">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="./js/landing.js"></script>
+	</head>
+	<body ng-app="myLandingApp" ng-controller ="myLandingCtrl">
+		<div >
+			<div class="content">
+				<div id="welcomeHeader">Smart priscription for {{name}}
+				
+				</div>
+				<div id="searchMedicine">
+					<input type="text" placeholder="Search For Medicine....." ng-model="searchMedicin" ng-change="getDataFromAPI()">
+					<i class="fa fa-search" aria-hidden="true"></i>
+				</div>
+				<div id="searchResultDataDiv" ng-show="scrollShow" scroll>
+					<table>
+						<tbody>
+						<tr ng-repeat=" x in myWelcome.drugList | searchFor:searchMedicin" ng-click="populateTable(x)">
+							<td>{{x.drugName}}</td>
+							<td>{{x.drugType}}</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="table">
+				
+					<table>
+						<tr>
+							<th colspan="3">Medicine Name</th>
+							<th>Quantity</th>
+							<th>Start From</th>
+							<th>Duration</th>
+							<th colspan="3">Frequency</th>
+							<th>Meal Timing</th>
+							<th>Recurrence</th>
+							<th>Rate</th>
+							<th colspan="2"></th>
+							<th colspan="5"></th>
+							<th id ="cartLogo"><img src="./image/cart.png"><div>{{cartItemsCount}}</div></img></th>
+							
+						 </tr>
+						<tr ng-repeat="data in dataArray">
+							<td>{{data.drugType}}</td>
+							<td>{{data.drugName}}</td>
+							<td><a href="javascript:;" ng-click="showInfoPopUp(data)"><img class="imageInfo" src="./image/info.png"></img></a></td>
+							<td><input type="text"  ng-model="data.quantityValue" ng-if="data.showValue" only-numbers><p ng-if="!data.showValue">{{data.quantityValue}}</p></td>
+							<td><p ng-if="!data.showValue">{{data.selectedName}}</p><select ng-model="data.selectedName" ng-options="selectValue for selectValue in values" ng-if="data.showValue"/></td>
+							<td><p ng-if="!data.showValue">{{data.selectedDur}}</p><select ng-model="data.selectedDur" ng-options="selectValue for selectValue in values" ng-if="data.showValue"/></td>
+							<td class ="freq"><input class ="freq" type="text" ng-model="data.morning" ng-if="data.showValue"><p ng-if="!data.showValue">{{data.morning}}</p></td>
+							<td class ="freq"><input class ="freq" type=" text" ng-model="data.noon" ng-if="data.showValue"><p ng-if="!data.showValue">{{data.noon}}</p></td>
+							<td class ="freq"><input class ="freq" type="text" ng-model="data.evening" ng-if="data.showValue"><p ng-if="!data.showValue">{{data.evening}}</p></td>	
+							<td><p ng-if="!data.showValue">{{data.selectedMealTime}}</p><select ng-model="data.selectedMealTime" ng-options="selectMealValue for selectMealValue in mealTimes" ng-if="data.showValue"></td>
+							<td><p ng-if="!data.showValue">{{data.recurrenceValue}}</p><select ng-model="data.recurrenceValue" ng-options="selectRecValue for selectRecValue in recurrence" ng-if="data.showValue"/></td>
+							<td>{{data.price}} Rs. Per Quantity</td>
+							<td ><a href="javascript:;" ng-click="deleteRow(data.drugName)"><img src="./image/delete.png" class="freq"></img></a></td>
+							<td ng-if="data.showEdit"><button ng-click="editData(data)">Edit</button></td>
+							<td ng-if="data.showAdd"><button ng-click="addData(data)">Update</button></td>
+						</tr>
+					</table>
+				
+				</div>
+				
+			</div>
+			<div id ="totalCartPrice">
+					<div id="calculateBill">
+						<button ng-click="calculateTotalBill()">Calculate Bill</button>
+					</div>
+					<div id="tableBill" ng-show="billShow"> 
+						<table>
+							<tr>
+								<td>Bill Description</td>
+							</tr>
+							<tr>
+								<td>Total Quantity </td>
+								<td>{{totalQuantity}} </td>	
+							</tr>
+							<tr>
+								<td>Item Price </td>
+								<td>{{price}} Rs.</td>	
+							</tr>
+							<tr>
+								<td>SGST</td>
+								<td>{{2.5*price/100}} Rs.</td>	
+							</tr>
+							<tr>
+								<td>CGST</td>
+								<td>{{2.5*price/100}} Rs.<td>
+							</tr>
+							<tr>
+								<td>Total Bill</td>
+								<td>{{price+2*2.5*price/100}} Rs.</td>	
+							</tr>
+						</table>
+					</div>
+			</div>
+			<div>
+					<textarea rows="5" cols="90" placeholder="Enter Notes for the prescription"></textarea>
+				</div>
+				<div class="buttonContainerDiv">
+						<div class="buttonDiv">
+							<button>Create Prescription</button>
+						</div>
+				</div>
+				<div class="infoPopUpDiv" ng-show="showPopUp">
+					<p class="close" ng-click ="closePopUp()"><a href="javascript:;">X</a></p>
+					<h3>Drug Information</h3>
+					<p>{{infoData.drugName}}</p>
+					<p>Type: {{infoData.drugType}}</p>
+					<p>Compound: {{infoData.compound}}</p>
+					<p>Interaction: {{infoData.drugInteractions}}</p>
+					<p>Manufacturing Company: {{infoData.pharmaCompName}}</p>
+				</div>
+		</div>
+	</body>
+</html>

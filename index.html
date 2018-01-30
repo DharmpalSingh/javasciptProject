@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./css/index.css">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="./js/index.js"></script>
+	</head>
+	<body ng-app="myWebApp">
+		<div id="logo">
+			<img src="./image/mainlogo.png">
+		</div>
+		
+		<div id="logInContainer" ng-controller="logInCtrl">
+			<div id="centerContent">
+				<form action ="landing.html" method="POST" name="personForm" ng-submit="personForm.$valid &&sendForm()">
+					<div id="userName">
+						<i id="filtersubmit" class="fa fa-envelope" aria-hidden="true"></i>
+						<input type="text" name="email" ng-model="txtmail" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" placeholder="Enter Email Address" required>
+						<span style="color:Red" ng-show="email.$error.required"> Required! </span>
+						<span style="color:Red" ng-show="personForm.email.$dirty&&personForm.email.$error.pattern">Please Enter Valid Email</span>
+					</div>
+					<div id="password">
+						<i id="filtersubmit" class="fa fa-lock" aria-hidden="true"></i>
+						<input type="password" placeholder="Enter password" required>
+					</div>
+					<div id="logInButton">
+						<input type="submit" placeholder="Enter Email Address" value="Login">	
+					</div>
+				</form>
+			</div>
+		</div>
+		
+	</body>
+</html>
